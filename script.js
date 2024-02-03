@@ -102,7 +102,6 @@ function updateExpense(index) {
     }
   };
 }
-
 function displayExpenses(expensesToDisplay = expenses) {
   const tableBody = document.getElementById("expenseTableBody");
   const total = document.getElementById("total");
@@ -117,11 +116,14 @@ function displayExpenses(expensesToDisplay = expenses) {
       currency: "IDR",
     });
 
+    const statusClass =
+      expense.status === "Lunas" ? "btn-success" : "btn-warning";
+
     const row = `<tr>
                     <td>${expense.date}</td>
                     <td>${expense.name}</td>
                     <td>${formattedAmount}</td>
-                    <td><span class="btn btn-warning text-white">${expense.status}</span></td>
+                    <td><span class="btn ${statusClass} text-white">${expense.status}</span></td>
                     <td>
                       <button type="button" class="btn btn-info text-white" onclick="updateExpense(${index})">Update</button>
                       <button type="button" class="btn btn-danger" onclick="deleteExpense(${index})">Hapus</button>

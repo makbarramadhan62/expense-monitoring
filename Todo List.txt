@@ -1,0 +1,3 @@
+Feat:
+- Tambahkan fitur status (Lunas, belum bayar)
+- Tambahkan fitur salin rekening untuk pembayaran (?)

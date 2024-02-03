@@ -35,22 +35,110 @@
         <div class="col">
           <div class="card shadow-sm border-0">
             <div class="card-body text-center">
-              <p class="card-text">Total User A</p>
-              <p id="totalA" class="card-title fw-bold">Rp 0.00</p>
-            </div>
-          </div>
-        </div>
-        <div class="col">
-          <div class="card shadow-sm border-0">
-            <div class="card-body text-center">
-              <p class="card-text">Total User I</p>
-              <p id="totalI" class="card-title fw-bold">Rp 0.00</p>
+              <p class="card-text">Total Pengeluaran</p>
+              <p id="total" class="card-title fw-bold">Rp 0.00</p>
             </div>
           </div>
         </div>
       </div>
 
-      <!-- Modal -->
+      <!-- Modal update data -->
+
+      <div
+        class="modal fade"
+        id="updateExpenseModal"
+        tabindex="-1"
+        aria-labelledby="updateExpenseModalLabel"
+        aria-hidden="true"
+      >
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="updateExpenseModalLabel">
+                Update Data Pengeluaran
+              </h5>
+              <button
+                type="button"
+                class="btn-close"
+                data-bs-dismiss="modal"
+                aria-label="Close"
+              ></button>
+            </div>
+            <div class="modal-body">
+              <form id="updateExpenseForm" class="d-flex flex-column gap-3">
+                <div class="col-12">
+                  <label class="visually-hidden" for="updateExpenseName"
+                    >Tanggal</label
+                  >
+                  <div class="input-group">
+                    <input
+                      type="date"
+                      class="form-control w-lg"
+                      id="updateExpenseDate"
+                      required
+                    />
+                  </div>
+                </div>
+
+                <div class="col-12">
+                  <label class="visually-hidden" for="updateExpenseName"
+                    >Nama Pengeluaran</label
+                  >
+                  <div class="input-group">
+                    <input
+                      type="text"
+                      class="form-control w-lg"
+                      id="updateExpenseName"
+                      placeholder="Nama Pengeluaran"
+                      required
+                    />
+                  </div>
+                </div>
+
+                <div class="col-12">
+                  <label class="visually-hidden" for="updateExpenseAmount"
+                    >Nominal</label
+                  >
+                  <input
+                    type="number"
+                    class="form-control"
+                    id="updateExpenseAmount"
+                    placeholder="Nominal"
+                    required
+                  />
+                </div>
+
+                <div class="dropdown">
+                  <select id="updateExpenseStatus" class="btn border">
+                    <option selected="selected" disabled>Pilih Status</option>
+                    <option value="lunas">Lunas</option>
+                    <option value="Belum Bayar">Belum Bayar</option>
+                  </select>
+                </div>
+              </form>
+            </div>
+            <div class="modal-footer">
+              <button
+                type="button"
+                class="btn btn-primary"
+                data-bs-dismiss="modal"
+                onclick="confirmUpdateExpense()"
+              >
+                Simpan Perubahan
+              </button>
+              <button
+                type="button"
+                class="btn btn-secondary"
+                data-bs-dismiss="modal"
+              >
+                Tutup
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Modal tambah data -->
       <div
         class="modal fade"
         id="expenseModal"
@@ -116,10 +204,10 @@
                 </div>
 
                 <div class="dropdown">
-                  <select id="expensePerson" class="btn border">
-                    <option selected="selected" disabled>Pilih Nama</option>
-                    <option value="A">A</option>
-                    <option value="I">I</option>
+                  <select id="expenseStatus" class="btn border">
+                    <option selected="selected" disabled>Pilih Status</option>
+                    <option value="Lunas">Lunas</option>
+                    <option value="Belum Bayar">Belum Bayar</option>
                   </select>
                 </div>
               </form>
@@ -185,7 +273,7 @@
                 <th scope="col">Tanggal</th>
                 <th scope="col">Nama Pengeluaran</th>
                 <th scope="col">Nominal</th>
-                <th scope="col">Username</th>
+                <th scope="col">Status</th>
                 <th scope="col">Action</th>
               </tr>
             </thead>
@@ -196,23 +284,22 @@
     </div>
 
     <footer class="text-center text-lg-start text-white fixed-bottom">
-        <section class="text-center">
-          <!-- Instagram -->
-          <a class="btn btn-floating m-1" href="#!" role="button"
-            ><i class="bi bi-instagram"></i
-          ></a>
+      <section class="text-center">
+        <!-- Instagram -->
+        <a class="btn btn-floating m-1" href="#!" role="button"
+          ><i class="bi bi-instagram"></i
+        ></a>
 
-          <!-- Linkedin -->
-          <a class="btn btn-floating m-1" href="#!" role="button"
-            ><i class="bi bi-linkedin"></i
-          ></a>
+        <!-- Linkedin -->
+        <a class="btn btn-floating m-1" href="#!" role="button"
+          ><i class="bi bi-linkedin"></i
+        ></a>
 
-          <!-- Github -->
-          <a class="btn btn-floating m-1" href="#!" role="button"
-            ><i class="bi bi-github"></i
-          ></a>
-        </section>
-      </div>
+        <!-- Github -->
+        <a class="btn btn-floating m-1" href="#!" role="button"
+          ><i class="bi bi-github"></i
+        ></a>
+      </section>
 
       <div class="text-dark text-center pb-3">
         © 2024 Copyright:

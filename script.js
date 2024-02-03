@@ -20,13 +20,13 @@ function addExpense() {
   const date = document.getElementById("expenseDate").value;
   const name = document.getElementById("expenseName").value;
   const amount = document.getElementById("expenseAmount").value;
-  const person = document.getElementById("expensePerson").value;
+  const status = document.getElementById("expenseStatus").value;
 
   const expense = {
     date: date,
     name: name,
     amount: amount,
-    person: person,
+    status: status,
   };
 
   expenses.push(expense);
@@ -46,90 +46,102 @@ function deleteExpense(index) {
 }
 
 function updateTotal() {
-  const totalA = document.getElementById("totalA");
-  const totalI = document.getElementById("totalI");
+  const total = document.getElementById("total");
 
-  if (!totalA || !totalI) {
-    console.error("Element totalA or totalI not found");
+  if (!total) {
+    console.error("Element or total not found");
     return;
   }
 
-  const totalPerPerson = {
-    A: 0,
-    I: 0,
-  };
+  let totalAmount = 0;
 
   expenses.forEach((expense) => {
-    totalPerPerson[expense.person] += parseFloat(expense.amount);
+    totalAmount += parseFloat(expense.amount);
   });
 
-  if (totalPerPerson["A"]) {
-    totalA.textContent = totalPerPerson["A"].toLocaleString("id-ID", {
-      style: "currency",
-      currency: "IDR",
-    });
-  } else {
-    totalA.textContent = "Rp 0.00";
-  }
+  total.textContent = totalAmount.toLocaleString("id-ID", {
+    style: "currency",
+    currency: "IDR",
+  });
+}
 
-  if (totalPerPerson["I"]) {
-    totalI.textContent = totalPerPerson["I"].toLocaleString("id-ID", {
-      style: "currency",
-      currency: "IDR",
-    });
-  } else {
-    totalI.textContent = "Rp 0.00";
-  }
+function updateExpense(index) {
+  const expenseToUpdate = expenses[index];
+
+  document.getElementById("updateExpenseDate").value = expenseToUpdate.date;
+  document.getElementById("updateExpenseName").value = expenseToUpdate.name;
+  document.getElementById("updateExpenseAmount").value = expenseToUpdate.amount;
+  document.getElementById("updateExpenseStatus").value = expenseToUpdate.status;
+
+  const updateExpenseModal = new bootstrap.Modal(
+    document.getElementById("updateExpenseModal")
+  );
+  updateExpenseModal.show();
+
+  window.confirmUpdateExpense = function () {
+    const updatedName = document.getElementById("updateExpenseName").value;
+    const updatedAmount = document.getElementById("updateExpenseAmount").value;
+    const updatedStatus = document.getElementById("updateExpenseStatus").value;
+
+    if (updatedName && updatedAmount && updatedStatus) {
+      const updatedExpense = {
+        date: expenseToUpdate.date,
+        name: updatedName,
+        amount: updatedAmount,
+        status: updatedStatus,
+      };
+
+      expenses[index] = updatedExpense;
+
+      saveExpenses();
+      updateTotal();
+      displayExpenses();
+      updateExpenseModal.hide();
+    } else {
+      alert("Pembaruan dibatalkan. Pastikan Anda mengisi semua informasi.");
+    }
+  };
 }
 
 function displayExpenses(expensesToDisplay = expenses) {
   const tableBody = document.getElementById("expenseTableBody");
-  const totalA = document.getElementById("totalA");
-  const totalI = document.getElementById("totalI");
+  const total = document.getElementById("total");
 
   tableBody.innerHTML = "";
 
-  const totalPerPerson = {};
+  let totalAmount = 0;
 
   expensesToDisplay.forEach((expense, index) => {
     const formattedAmount = parseFloat(expense.amount).toLocaleString("id-ID", {
       style: "currency",
       currency: "IDR",
     });
+
     const row = `<tr>
                     <td>${expense.date}</td>
                     <td>${expense.name}</td>
                     <td>${formattedAmount}</td>
-                    <td>${expense.person}</td>
+                    <td><span class="btn btn-warning text-white">${expense.status}</span></td>
                     <td>
+                      <button type="button" class="btn btn-info text-white" onclick="updateExpense(${index})">Update</button>
                       <button type="button" class="btn btn-danger" onclick="deleteExpense(${index})">Hapus</button>
                     </td>
                   </tr>`;
-    tableBody.innerHTML += row;
 
-    totalPerPerson[expense.person] =
-      (totalPerPerson[expense.person] || 0) + parseFloat(expense.amount);
+    tableBody.innerHTML += row;
+    totalAmount += parseFloat(expense.amount);
   });
 
-  if (totalPerPerson["A"]) {
-    totalA.textContent = totalPerPerson["A"].toLocaleString("id-ID", {
-      style: "currency",
-      currency: "IDR",
-    });
-  }
-
-  if (totalPerPerson["I"]) {
-    totalI.textContent = totalPerPerson["I"].toLocaleString("id-ID", {
-      style: "currency",
-      currency: "IDR",
-    });
-  }
+  total.textContent = totalAmount.toLocaleString("id-ID", {
+    style: "currency",
+    currency: "IDR",
+  });
 }
 
 function searchExpenses() {
   const searchTerm = document.getElementById("searchInput").value.toLowerCase();
   const filteredExpenses = expenses.filter((expense) =>
-    expense.person.toLowerCase().includes(searchTerm)
+    expense.name.toLowerCase().includes(searchTerm)
   );
   displayExpenses(filteredExpenses);
 }

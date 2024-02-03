@@ -5,11 +5,15 @@ const today = new Date().toISOString().split("T")[0];
 expenseDateInput.value = today;
 
 function saveExpenses() {
-  document.getElementById("expenseDate").value = "";
+  localStorage.setItem("expenses", JSON.stringify(expenses));
+
   document.getElementById("expenseName").value = "";
   document.getElementById("expenseAmount").value = "";
 
-  localStorage.setItem("expenses", JSON.stringify(expenses));
+  const expenseDateInput = document.getElementById("expenseDate");
+
+  const today = new Date().toISOString().split("T")[0];
+  expenseDateInput.value = today;
 }
 
 function addExpense() {
@@ -45,6 +49,11 @@ function updateTotal() {
   const totalA = document.getElementById("totalA");
   const totalI = document.getElementById("totalI");
 
+  if (!totalA || !totalI) {
+    console.error("Element totalA or totalI not found");
+    return;
+  }
+
   const totalPerPerson = {
     A: 0,
     I: 0,
@@ -54,14 +63,23 @@ function updateTotal() {
     totalPerPerson[expense.person] += parseFloat(expense.amount);
   });
 
-  totalA.textContent = totalPerPerson["A"].toLocaleString("id-ID", {
-    style: "currency",
-    currency: "IDR",
-  });
-  totalI.textContent = totalPerPerson["I"].toLocaleString("id-ID", {
-    style: "currency",
-    currency: "IDR",
-  });
+  if (totalPerPerson["A"]) {
+    totalA.textContent = totalPerPerson["A"].toLocaleString("id-ID", {
+      style: "currency",
+      currency: "IDR",
+    });
+  } else {
+    totalA.textContent = "Rp 0.00";
+  }
+
+  if (totalPerPerson["I"]) {
+    totalI.textContent = totalPerPerson["I"].toLocaleString("id-ID", {
+      style: "currency",
+      currency: "IDR",
+    });
+  } else {
+    totalI.textContent = "Rp 0.00";
+  }
 }
 
 function displayExpenses(expensesToDisplay = expenses) {

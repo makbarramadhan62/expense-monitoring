@@ -125,8 +125,8 @@ function displayExpenses(expensesToDisplay = expenses) {
                     <td>${formattedAmount}</td>
                     <td><span class="btn ${statusClass} text-white">${expense.status}</span></td>
                     <td>
-                      <button type="button" class="btn btn-info text-white" onclick="updateExpense(${index})">Update</button>
-                      <button type="button" class="btn btn-danger" onclick="deleteExpense(${index})">Hapus</button>
+                      <button type="button" class="btn btn-info text-white" onclick="updateExpense(${index})"><i class="bi bi-pencil"></i>  </button>
+                      <button type="button" class="btn btn-danger" onclick="deleteExpense(${index})"><i class="bi bi-trash"></i></button>
                     </td>
                   </tr>`;
 
